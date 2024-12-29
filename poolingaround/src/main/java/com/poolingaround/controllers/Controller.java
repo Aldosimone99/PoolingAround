@@ -1,16 +1,32 @@
 package com.poolingaround.controllers;
 
+import java.util.List;
 import java.util.Scanner;
 
+import com.poolingaround.interfaces.Prenotazioni;
+import com.poolingaround.interfaces.Utenti;
+import com.poolingaround.interfaces.Viaggi;
 import com.poolingaround.services.UtilService;
 
 public class Controller {
+
+    private final String UTENTI_PATH = "com/poolingaround/resources/utenti.csv";
+    private final String VIAGGI_PATH = "com/poolingaround/resources/viaggi.csv";
+    private final String PRENOTAZIONI_PATH = "com/poolingaround/resources/prenotazioni.csv";
 
     UtilService service = new UtilService();
 
     public void startMenu() {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
+        
+        List<Utenti> utenti = service.loadUtentiFromCSV(UTENTI_PATH);
+        List<Viaggi> viaggi = service.loadViaggiFromCSV(VIAGGI_PATH);
+        List<Prenotazioni> prenotazioni  = service.loadPrenotazioniFromCSV(PRENOTAZIONI_PATH);
+
+        System.out.println("\nlunghezza utenti: "+utenti.size());
+        System.out.println("\nlunghezza viaggi: "+viaggi.size());
+        System.out.println("\nlunghezza prenotazioni: "+prenotazioni.size());
 
         while (!exit) {
             System.out.println("\n--- Menu PoolingAround ---");
