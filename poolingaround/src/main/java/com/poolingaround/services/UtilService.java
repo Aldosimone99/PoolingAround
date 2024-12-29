@@ -24,9 +24,19 @@ public class UtilService {
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 
-    public void displayAllActivities() {
-        System.out.println("\n========\n\nVisualizzazione di tutte le attività...\n\n=======\n\n");
-        // Implementa la logica per visualizzare tutte le attività
+    public void displayAllActivities(List<Viaggi> viaggi) {
+
+        System.out.println("\n--- Tutti i viaggi ---");
+        for (Viaggi viaggio : viaggi) {
+            System.out.println("\n-----------------------------\n");
+            System.out.println("Id viaggio : " + viaggio.getId());
+            System.out.println("Data : " + viaggio.getData().format(dateFormatter));
+            System.out.println("Durata : " + viaggio.getDurata() + " ore");
+            System.out.println("Partenza : " + viaggio.getPartenza());
+            System.out.println("Arrivo : " + viaggio.getArrivo());
+            System.out.println("Disponibile : " + (viaggio.isDisponibile()?"SI":"NO"));
+            System.out.println("\n-----------------------------\n");
+        }
     }
 
     public void bookActivity() {

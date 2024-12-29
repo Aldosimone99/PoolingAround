@@ -42,7 +42,7 @@ public class Controller {
 
             switch (input) {
                 case "1":
-                    service.displayAllActivities();
+                    service.displayAllActivities(viaggi);
                     break;
                 case "2":
                     service.bookActivity();
