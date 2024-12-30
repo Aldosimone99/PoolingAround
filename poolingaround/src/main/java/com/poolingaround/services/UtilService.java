@@ -1,6 +1,7 @@
 package com.poolingaround.services;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,9 +12,11 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import com.poolingaround.interfaces.Prenotazioni;
@@ -171,10 +174,38 @@ public void addUser(List<Utenti> utenti) {
     }
 }
 
-    public void exportAvailableTrips() {
-        System.out.println("\n========\n\nEsportazione di viaggi disponibili...\n\n=======\n\n");
-        // Implementa la logica per esportare viaggi disponibili
+
+    public void exportAvailableTrips(List<Viaggi> viaggi) {
+        // Filtra i viaggi disponibili
+        List<Viaggi> availableTrips = viaggi.stream()
+                .filter(Viaggi::isDisponibile)
+                .collect(Collectors.toList());
+
+        // Genera il nome del file con la data corrente
+        String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd_MM_yyyy"));
+        String fileName = "viaggi_" + currentDate + ".csv";
+
+        try (FileWriter writer = new FileWriter(fileName);
+            CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT
+                    .withHeader("ID", "Data", "Durata", "Partenza", "Arrivo"))) {
+
+            // Scrive i dati nel file CSV
+            for (Viaggi viaggio : availableTrips) {
+                printer.printRecord(
+                        viaggio.getId(),
+                        viaggio.getData().format(dateFormatter),
+                        viaggio.getDurata(),
+                        viaggio.getPartenza(),
+                        viaggio.getArrivo()
+                );
+            }
+            System.out.println("\nFile esportato con successo: " + fileName);
+
+        } catch (IOException e) {
+            System.err.println("Errore durante l'esportazione del file CSV: " + e.getMessage());
+        }
     }
+
 
 
     public List<Utenti> loadUtentiFromCSV(String filename) {

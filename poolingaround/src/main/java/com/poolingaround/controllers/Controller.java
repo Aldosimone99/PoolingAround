@@ -78,7 +78,7 @@ public class Controller {
                     break;
 
                 case "5":
-                    service.exportAvailableTrips();
+                    service.exportAvailableTrips(viaggi);
                     break;
 
                 case "0":
