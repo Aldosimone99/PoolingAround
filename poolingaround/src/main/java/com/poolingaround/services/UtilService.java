@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -39,20 +40,136 @@ public class UtilService {
         }
     }
 
-    public void bookActivity() {
-        System.out.println("\n========\n\nPrenotazione di un'attività...\n\n=======\n\n");
-        // Implementa la logica per prenotare un'attività
+    public boolean bookActivity(int idViaggio, int idUtente, List<Viaggi> viaggi, List<Prenotazioni> prenotazioni) {
+        // Cerca il viaggio specifico
+        Viaggi viaggio = viaggi.stream()
+                .filter(v -> v.getId() == idViaggio)
+                .findFirst()
+                .orElse(null);
+    
+        if (viaggio == null) {
+            System.out.println("Errore: Il viaggio con ID " + idViaggio + " non esiste.");
+            return false;
+        }
+    
+        // Controlla se il viaggio è disponibile
+        if (!viaggio.isDisponibile()) {
+            System.out.println("Errore: Il viaggio con ID " + idViaggio + " non è disponibile.");
+            return false;
+        }
+    
+        // Controlla se l'utente ha già prenotato lo stesso viaggio
+        boolean alreadyBooked = prenotazioni.stream()
+                .anyMatch(p -> p.getIdViaggio() == idViaggio && p.getIdUtente() == idUtente);
+    
+        if (alreadyBooked) {
+            System.out.println("Errore: L'utente con ID " + idUtente + " ha già prenotato questo viaggio.");
+            return false;
+        }
+
+        // Genera il nuovo ID per la prenotazione
+        int newId = prenotazioni.stream()
+        .mapToInt(Prenotazioni::getId)
+        .max()
+        .orElse(0) + 1;
+    
+        // Aggiorna lo stato del viaggio a non disponibile
+        viaggio.setDisponibile(false);
+    
+        // Aggiungi la nuova prenotazione
+        Prenotazioni nuovaPrenotazione = new Prenotazioni(
+                prenotazioni.size() + 1, // Genera un nuovo ID per la prenotazione
+                idViaggio,
+                idUtente
+        );
+        prenotazioni.add(nuovaPrenotazione);
+    
+        System.out.println("Prenotazione effettuata con successo!");
+        return true;
     }
 
-    public void cancelBooking() {
-        System.out.println("\n========\n\nCancellazione di una prenotazione...\n\n=======\n\n");
-        // Implementa la logica per cancellare una prenotazione
+    public boolean cancelBooking(int idPrenotazione, List<Viaggi> viaggi, List<Prenotazioni> prenotazioni) {
+        // Trova la prenotazione da cancellare
+        Prenotazioni prenotazione = prenotazioni.stream()
+                .filter(p -> p.getId() == idPrenotazione)
+                .findFirst()
+                .orElse(null);
+    
+        if (prenotazione == null) {
+            System.out.println("Errore: La prenotazione con ID " + idPrenotazione + " non esiste.");
+            return false;
+        }
+    
+        // Trova il viaggio associato alla prenotazione
+        Viaggi viaggio = viaggi.stream()
+                .filter(v -> v.getId() == prenotazione.getIdViaggio())
+                .findFirst()
+                .orElse(null);
+    
+        if (viaggio == null) {
+            System.out.println("Errore: Il viaggio associato alla prenotazione non esiste.");
+            return false;
+        }
+    
+        // Aggiorna il viaggio come disponibile
+        viaggio.setDisponibile(true);
+    
+        // Rimuovi la prenotazione dalla lista
+        prenotazioni.remove(prenotazione);
+    
+        System.out.println("La prenotazione con ID " + idPrenotazione + " è stata cancellata con successo.");
+        System.out.println("Il viaggio con ID " + viaggio.getId() + " è ora disponibile.");
+        return true;
     }
 
-    public void addUser() {
-        System.out.println("\n========\n\nAggiunta di un nuovo utente...\n\n=======\n\n");
-        // Implementa la logica per aggiungere un nuovo utente
+
+
+public void addUser(List<Utenti> utenti) {
+    Scanner scanner = new Scanner(System.in);
+
+    System.out.println("\n--- Aggiungi un nuovo utente ---");
+
+    try {
+        // Inserimento dati da parte dell'utente
+        System.out.print("Inserisci l'ID: ");
+        int id = Integer.parseInt(scanner.nextLine().trim());
+
+        // Verifica unicità ID
+        boolean idExists = utenti.stream().anyMatch(u -> u.getId() == id);
+        if (idExists) {
+            System.out.println("Errore: L'ID fornito è già associato a un utente esistente.");
+            return;
+        }
+
+        System.out.print("Inserisci il Nome: ");
+        String nome = scanner.nextLine().trim();
+
+        System.out.print("Inserisci il Cognome: ");
+        String cognome = scanner.nextLine().trim();
+
+        System.out.print("Inserisci la Data di nascita (formato dd/MM/yyyy): ");
+        LocalDate dataNascita = LocalDate.parse(scanner.nextLine().trim(), dateFormatter);
+
+        System.out.print("Inserisci l'Indirizzo: ");
+        String indirizzo = scanner.nextLine().trim();
+
+        System.out.print("Inserisci il Documento ID: ");
+        String documentoId = scanner.nextLine().trim();
+
+        // Creazione nuovo utente
+        Utenti nuovoUtente = new Utenti(id, nome, cognome, dataNascita, indirizzo, documentoId);
+        utenti.add(nuovoUtente);
+
+        System.out.println("Utente aggiunto con successo:\n" + nuovoUtente);
+
+    } catch (NumberFormatException e) {
+        System.out.println("Errore: L'ID deve essere un numero intero.");
+    } catch (DateTimeParseException e) {
+        System.out.println("Errore: Formato della data di nascita non valido. Usa il formato dd/MM/yyyy.");
+    } catch (Exception e) {
+        System.out.println("Errore durante l'aggiunta dell'utente: " + e.getMessage());
     }
+}
 
     public void exportAvailableTrips() {
         System.out.println("\n========\n\nEsportazione di viaggi disponibili...\n\n=======\n\n");

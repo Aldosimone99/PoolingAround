@@ -44,18 +44,43 @@ public class Controller {
                 case "1":
                     service.displayAllActivities(viaggi);
                     break;
+
                 case "2":
-                    service.bookActivity();
+                    System.out.println("\n--- Prenotazione di un viaggio ---");
+                    
+                    // Richiedi l'ID del viaggio
+                    System.out.print("Inserisci l'ID del viaggio: ");
+                    int idViaggio = Integer.parseInt(scanner.nextLine().trim());
+                    
+                    // Richiedi l'ID dell'utente
+                    System.out.print("Inserisci il tuo ID utente: ");
+                    int idUtente = Integer.parseInt(scanner.nextLine().trim());
+                    
+                    // Esegui la prenotazione
+                    boolean risultato = service.bookActivity(idViaggio, idUtente, viaggi, prenotazioni);
+                    
+                    if (!risultato) {
+                        System.out.println("La prenotazione non è stata completata.");
+                    }
                     break;
-                case "3":
-                    service.cancelBooking();
+
+                    case "3":
+                    System.out.print("Inserisci l'ID della prenotazione da cancellare: ");
+                    int idPrenotazione = Integer.parseInt(scanner.nextLine());
+                    boolean cancelled = service.cancelBooking(idPrenotazione, viaggi, prenotazioni);
+                    if (cancelled) {
+                        System.out.println("La lista delle prenotazioni e la disponibilità dei viaggi sono state aggiornate.");
+                    }
                     break;
+
                 case "4":
-                    service.addUser();
+                    service.addUser(utenti);
                     break;
+
                 case "5":
                     service.exportAvailableTrips();
                     break;
+
                 case "0":
                     exit = true;
                     System.out.println("\n\nUscita dal programma.\nGrazie per aver utilizzato PoolingAround!\n\n");
