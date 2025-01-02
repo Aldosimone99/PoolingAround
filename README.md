@@ -70,7 +70,9 @@ Classe di supporto per operazioni come lettura/scrittura CSV, gestione prenotazi
  
 ## **Esecuzione**
 L’applicazione fornisce un menu interattivo che consente di eseguire le operazioni desiderate.
+
 Esempio del menu principale:
+
 --- Menu PoolingAround ---
 1. Visualizzare tutti i viaggi dell'interno del sistema
 2. Prenotare un viaggio esistente
