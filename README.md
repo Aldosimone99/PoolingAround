@@ -87,9 +87,13 @@ Seleziona un'opzione:
 ## **Gestione Dati**
 
 L’applicazione utilizza file CSV per memorizzare i dati. I file richiesti sono:
+
 	•	utenti.csv
+ 
 Contiene i dettagli degli utenti (ID, nome, cognome, ecc.).
+
 	•	viaggi.csv
 Elenca i viaggi disponibili e i loro dettagli (ID, data, durata, partenza, arrivo, ecc.).
+
 	•	prenotazioni.csv
 Memorizza le prenotazioni effettuate (ID prenotazione, ID utente, ID viaggio).
