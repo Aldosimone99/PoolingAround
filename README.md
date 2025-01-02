@@ -57,8 +57,10 @@ Per lanciare l'applicazione utilizzando solo il file .jar eseguire il comando ja
 ## **Struttura del Progetto**
 	•	com.poolingaround.controllers.Controller
 Classe principale per la gestione del flusso logico dell’applicazione.
+
 	•	com.poolingaround.services.UtilService
 Classe di supporto per operazioni come lettura/scrittura CSV, gestione prenotazioni, e altro.
+
 	•	Interfacce:
 	•	Utenti - Gestisce i dati relativi agli utenti.
 	•	Viaggi - Modella i dettagli di un viaggio.
