@@ -10,9 +10,9 @@ import com.poolingaround.services.UtilService;
 
 public class Controller {
 
-    private final String UTENTI_PATH = "com/poolingaround/resources/utenti.csv";
-    private final String VIAGGI_PATH = "com/poolingaround/resources/viaggi.csv";
-    private final String PRENOTAZIONI_PATH = "com/poolingaround/resources/prenotazioni.csv";
+    private final String UTENTI_PATH = "utenti.csv";
+    private final String VIAGGI_PATH = "viaggi.csv";
+    private final String PRENOTAZIONI_PATH = "prenotazioni.csv";
 
     UtilService service = new UtilService();
 
@@ -57,7 +57,7 @@ public class Controller {
                     int idUtente = Integer.parseInt(scanner.nextLine().trim());
                     
                     // Esegui la prenotazione
-                    boolean risultato = service.bookActivity(idViaggio, idUtente, viaggi, prenotazioni);
+                    boolean risultato = service.bookActivity(idViaggio, idUtente, viaggi, prenotazioni,utenti);
                     
                     if (!risultato) {
                         System.out.println("La prenotazione non è stata completata.");

@@ -43,7 +43,7 @@ public class UtilService {
         }
     }
 
-    public boolean bookActivity(int idViaggio, int idUtente, List<Viaggi> viaggi, List<Prenotazioni> prenotazioni) {
+    public boolean bookActivity(int idViaggio, int idUtente, List<Viaggi> viaggi, List<Prenotazioni> prenotazioni, List<Utenti> utenti) {
         // Cerca il viaggio specifico
         Viaggi viaggio = viaggi.stream()
                 .filter(v -> v.getId() == idViaggio)
@@ -61,10 +61,23 @@ public class UtilService {
             return false;
         }
     
+        // controlla se esiste l'utente
+        Utenti utente = utenti.stream()
+                .filter(u -> u.getId() == idUtente)
+                .findFirst()
+                .orElse(null);
+
+        if (utente == null) {
+            System.out.println("Errore: L'utente con ID " + idUtente + " non esiste.");
+            return false;
+        }
+
         // Controlla se l'utente ha già prenotato lo stesso viaggio
         boolean alreadyBooked = prenotazioni.stream()
                 .anyMatch(p -> p.getIdViaggio() == idViaggio && p.getIdUtente() == idUtente);
     
+
+
         if (alreadyBooked) {
             System.out.println("Errore: L'utente con ID " + idUtente + " ha già prenotato questo viaggio.");
             return false;
@@ -81,7 +94,7 @@ public class UtilService {
     
         // Aggiungi la nuova prenotazione
         Prenotazioni nuovaPrenotazione = new Prenotazioni(
-                prenotazioni.size() + 1, // Genera un nuovo ID per la prenotazione
+                newId, // Genera un nuovo ID per la prenotazione
                 idViaggio,
                 idUtente
         );
@@ -125,9 +138,7 @@ public class UtilService {
         return true;
     }
 
-
-
-public void addUser(List<Utenti> utenti) {
+    public void addUser(List<Utenti> utenti) {
     Scanner scanner = new Scanner(System.in);
 
     System.out.println("\n--- Aggiungi un nuovo utente ---");
@@ -141,6 +152,7 @@ public void addUser(List<Utenti> utenti) {
         boolean idExists = utenti.stream().anyMatch(u -> u.getId() == id);
         if (idExists) {
             System.out.println("Errore: L'ID fornito è già associato a un utente esistente.");
+            scanner.close();
             return;
         }
 
@@ -172,8 +184,10 @@ public void addUser(List<Utenti> utenti) {
     } catch (Exception e) {
         System.out.println("Errore durante l'aggiunta dell'utente: " + e.getMessage());
     }
+    finally{
+        scanner.close();
+    }
 }
-
 
     public void exportAvailableTrips(List<Viaggi> viaggi) {
         // Filtra i viaggi disponibili
@@ -186,6 +200,7 @@ public void addUser(List<Utenti> utenti) {
         String fileName = "viaggi_" + currentDate + ".csv";
 
         try (FileWriter writer = new FileWriter(fileName);
+            @SuppressWarnings("deprecation")
             CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT
                     .withHeader("ID", "Data", "Durata", "Partenza", "Arrivo"))) {
 
@@ -205,8 +220,6 @@ public void addUser(List<Utenti> utenti) {
             System.err.println("Errore durante l'esportazione del file CSV: " + e.getMessage());
         }
     }
-
-
 
     public List<Utenti> loadUtentiFromCSV(String filename) {
         List<Utenti> utenti = new ArrayList<>();
