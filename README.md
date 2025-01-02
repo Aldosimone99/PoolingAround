@@ -29,7 +29,7 @@ PoolingAround è un'applicazione Java per la gestione della prenotazione di viag
 2. **Maven** - Per gestire le dipendenze del progetto.  
 3. **Lombok** - Libreria per semplificare il codice boilerplate (assicurarsi di configurare il proprio IDE per supportare Lombok).
 
-4. ---
+---
 
 ## **Tecnologie Utilizzate**
 
