@@ -138,56 +138,50 @@ public class UtilService {
         return true;
     }
 
-    public void addUser(List<Utenti> utenti) {
-    Scanner scanner = new Scanner(System.in);
-
-    System.out.println("\n--- Aggiungi un nuovo utente ---");
-
-    try {
-        // Inserimento dati da parte dell'utente
-        System.out.print("Inserisci l'ID: ");
-        int id = Integer.parseInt(scanner.nextLine().trim());
-
-        // Verifica unicità ID
-        boolean idExists = utenti.stream().anyMatch(u -> u.getId() == id);
-        if (idExists) {
-            System.out.println("Errore: L'ID fornito è già associato a un utente esistente.");
-            scanner.close();
-            return;
+    public void addUser(List<Utenti> utenti, Scanner scanner) { // Passa lo Scanner come parametro
+        System.out.println("\n--- Aggiungi un nuovo utente ---");
+    
+        try {
+            // Inserimento dati da parte dell'utente
+            System.out.print("Inserisci l'ID: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+    
+            // Verifica unicità ID
+            boolean idExists = utenti.stream().anyMatch(u -> u.getId() == id);
+            if (idExists) {
+                System.out.println("Errore: L'ID fornito è già associato a un utente esistente.");
+                return;
+            }
+    
+            System.out.print("Inserisci il Nome: ");
+            String nome = scanner.nextLine().trim();
+    
+            System.out.print("Inserisci il Cognome: ");
+            String cognome = scanner.nextLine().trim();
+    
+            System.out.print("Inserisci la Data di nascita (formato dd/MM/yyyy): ");
+            LocalDate dataNascita = LocalDate.parse(scanner.nextLine().trim(), dateFormatter);
+    
+            System.out.print("Inserisci l'Indirizzo: ");
+            String indirizzo = scanner.nextLine().trim();
+    
+            System.out.print("Inserisci il Documento ID: ");
+            String documentoId = scanner.nextLine().trim();
+    
+            // Creazione nuovo utente
+            Utenti nuovoUtente = new Utenti(id, nome, cognome, dataNascita, indirizzo, documentoId);
+            utenti.add(nuovoUtente);
+    
+            System.out.println("Utente aggiunto con successo:\n" + nuovoUtente);
+    
+        } catch (NumberFormatException e) {
+            System.out.println("Errore: L'ID deve essere un numero intero.");
+        } catch (DateTimeParseException e) {
+            System.out.println("Errore: Formato della data di nascita non valido. Usa il formato dd/MM/yyyy.");
+        } catch (Exception e) {
+            System.out.println("Errore durante l'aggiunta dell'utente: " + e.getMessage());
         }
-
-        System.out.print("Inserisci il Nome: ");
-        String nome = scanner.nextLine().trim();
-
-        System.out.print("Inserisci il Cognome: ");
-        String cognome = scanner.nextLine().trim();
-
-        System.out.print("Inserisci la Data di nascita (formato dd/MM/yyyy): ");
-        LocalDate dataNascita = LocalDate.parse(scanner.nextLine().trim(), dateFormatter);
-
-        System.out.print("Inserisci l'Indirizzo: ");
-        String indirizzo = scanner.nextLine().trim();
-
-        System.out.print("Inserisci il Documento ID: ");
-        String documentoId = scanner.nextLine().trim();
-
-        // Creazione nuovo utente
-        Utenti nuovoUtente = new Utenti(id, nome, cognome, dataNascita, indirizzo, documentoId);
-        utenti.add(nuovoUtente);
-
-        System.out.println("Utente aggiunto con successo:\n" + nuovoUtente);
-
-    } catch (NumberFormatException e) {
-        System.out.println("Errore: L'ID deve essere un numero intero.");
-    } catch (DateTimeParseException e) {
-        System.out.println("Errore: Formato della data di nascita non valido. Usa il formato dd/MM/yyyy.");
-    } catch (Exception e) {
-        System.out.println("Errore durante l'aggiunta dell'utente: " + e.getMessage());
     }
-    finally{
-        scanner.close();
-    }
-}
 
     public void exportAvailableTrips(List<Viaggi> viaggi) {
         // Filtra i viaggi disponibili

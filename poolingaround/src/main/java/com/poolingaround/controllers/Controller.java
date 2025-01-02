@@ -74,7 +74,7 @@ public class Controller {
                     break;
 
                 case "4":
-                    service.addUser(utenti);
+                    service.addUser(utenti, scanner);
                     break;
 
                 case "5":
