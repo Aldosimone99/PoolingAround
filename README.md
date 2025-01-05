@@ -52,8 +52,6 @@ Eseguendo questo comando verranno compilati tutti i file nella cartella "target"
 
 Per lanciare l'applicazione attraverso il file .jar appena generato all'interno della cartella "target" eseguire il seguente comando: mvn exec:java
 
-Per lanciare l'applicazione utilizzando solo il file .jar scaricato eseguire il comando java -jar PoolingAround.jar da terminale.
-
 ---
 
 ## **Struttura del Progetto**
