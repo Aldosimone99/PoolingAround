@@ -36,7 +36,7 @@ PoolingAround è un'applicazione Java per la gestione della prenotazione di viag
 - **Java**  
 - **Maven**  
 - **Apache Commons CSV** - Per leggere e scrivere file CSV.  
-- **Lombok** - Per ridurre il codice boilerplate.
+- **Lombok** - Per ridurre il codice.
 
 ---
 
