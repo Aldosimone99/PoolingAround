@@ -47,10 +47,13 @@ Puoi clonare il repository eseguendo il seguente comando: git clone https://gith
 ## **Eseguire l'Applicazione**
 
 Una volta clonato il progetto eseguire il seguente comando: mvn clean package 
+
 Eseguendo questo comando verranno compilati tutti i file nella cartella "target" e verrà creato il file .jar
+
 Per lanciare l'applicazione attraverso il file .jar appena generato all'interno della cartella "target" eseguire il seguente comando: mvn exec:java
 
 Eseguire l'applicazione solo con il file .JAR
+
 Per lanciare l'applicazione utilizzando solo il file .jar eseguire il comando java -jar PoolingAround.jar
 
 ---
